@@ -1,16 +1,55 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="app">
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
 	<title>Alexa Rank Comparer</title>
 
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.0.8/semantic.min.css">
+
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.4/angular.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.0.8/semantic.min.js"></script>
 	<script src="app.js"></script>
+
+	<style>
+		.ui.container {padding-top:20px;}
+	</style>
 </head>
-<body>
-	
+<body ng-controller="mainController as main">
+	<div class="ui top attached small borderless menu">
+		<div class="header item">Alexa Ranking Comparer</div>
+		<div class="right text item">kshvmdn</div>
+	</div>
+	<div class="ui container">
+		<div class="ui form">
+			<div class="field">
+				<div class="ui action labeled input">
+					<div class="ui label">http://</div>
+					<input type="text" placeholder="example.com" ng-model="main.formData.link">
+					<button class="ui green button" type="submit" ng-click="main.addSite()">Add</button>
+				</div>
+			</div>
+		</div>
+		<table class="ui unstackable striped table">
+			<thead>
+				<tr>
+					<th>Website</th>
+					<th>Global Rank</th>
+					<th>Linked Sites</th>
+					<th class="center aligned two wide"><i>Remove</i></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="site in main.sites">
+					<td>{{ site.name }}</td>
+					<td>{{ site.rank }}</td>
+					<td>{{ site.linksIn }}</td>
+					<td class="center aligned"><i class="remove icon" ng-click="main.removeSite(site._id)"></i></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 </body>
 </html>
