@@ -1,0 +1,16 @@
+{
+  "name": "alexa-comparisons",
+  "version": "0.0.1",
+  "description": "Compare Alexa ranks of multiple sites at aonce",
+  "main": "server.js",
+  "author": "kshvmdn",
+  "dependencies": {
+    "body-parser": "^1.13.3",
+    "cheerio": "^0.19.0",
+    "express": "^4.13.3",
+    "method-override": "^2.3.5",
+    "mongoose": "^4.1.2",
+    "morgan": "^1.6.1",
+    "request": "^2.60.0"
+  }
+}
