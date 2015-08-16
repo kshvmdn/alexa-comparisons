@@ -18,12 +18,14 @@ app.use(methodOverride());
 
 mongoose.connect('mongodb://localhost/alexa');
 
-var SiteList = mongoose.model('SiteList', {
-	text : String
+var Site = mongoose.model('Site', {
+	name : String,
+	rank : Number,
+	linksIn : Number
 });
 
 app.get('/api/sites', function(req,res) {
-	SiteList.find(function(err, sites) {
+	Site.find(function(err, sites) {
 		if (err) throw err;
 		res.json(sites);
 	});
@@ -31,8 +33,8 @@ app.get('/api/sites', function(req,res) {
 
 app.post('/api/sites', function(req,res) {
 
-	var site = req.body.link;
-	var rank, sitesLinkingInto;
+	var site = req.body.link.trim();
+	var rank, linksIn;
 	var url = 'http://www.alexa.com/siteinfo/'+site;
 
 	request(url, function(error, response, html) {
@@ -48,30 +50,32 @@ app.post('/api/sites', function(req,res) {
 
 		$('#linksin-panel-content .font-4').filter(function() {
 			var data = $(this).text();
-			sitesLinkingInto = parseInt(data.replace(/\,/g,''),10);
+			linksIn = parseInt(data.replace(/\,/g,''),10);
 		});		
-	});
 
-	SiteList.create({
-		site: site,
-		rank: rank,
-		linksInto: sitesLinkingInto,
-		done: false
-	}, function(err, site) {
-		if (err) throw err;
-		SiteList.find(function(err, sites) {
+		Site.create({
+			name: site,
+			rank: rank,
+			linksIn: linksIn,
+			done: false
+		}, function(err, site) {
 			if (err) throw err;
-			res.json(sites);
+			Site.find(function(err, sites) {
+				if (err) throw err;
+				res.json(sites);
+			});
 		});
 	});
+
+	
 });
 
 app.delete('/api/sites/:site_id', function(req,res) {
-	SiteList.remove({
+	Site.remove({
 		_id: req.params.site_id
 	}, function(err, site) {
 		if (err) throw err;
-		SiteList.find(function(err,sites) {
+		Site.find(function(err,sites) {
 			if (err) throw err;
 			res.json(sites);
 		});
