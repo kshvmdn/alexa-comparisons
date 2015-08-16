@@ -29,4 +29,13 @@ var app = angular.module('app', [])
 					console.log('Error: '+data);
 				});
 		};
+		vm.removeAll = function() {
+			$http.delete('/api/sites/')
+				.success(function(data){
+					vm.sites = data;
+				})
+				.error(function(data){
+					console.log('Error: '+data);
+				});
+		}
 	});

@@ -66,8 +66,16 @@ app.post('/api/sites', function(req,res) {
 			});
 		});
 	});
+});
 
-	
+app.delete('/api/sites/', function(req,res) {
+	Site.remove({}, function(err, site) {
+		if (err) throw err;
+		Site.find(function(err,sites) {
+			if (err) throw err;
+			res.json(sites);
+		});
+	});
 });
 
 app.delete('/api/sites/:site_id', function(req,res) {
